@@ -5,7 +5,7 @@ import numpy as np
 from openpyxl import load_workbook
 
 # Input Parameters
-xValue = '500' # Input your known x-value (i.e. pressure, weight, temperature, etc.)
+yValue = '22' # Input your known x-value (i.e. pressure, weight, temperature, etc.)
 avename = 'Calibration_Values' # Existing excel file name where value will be logged
 Record_Length = 1000 # Number of data points taken (sample rate = .004s), then averaged, for sensor output
 #changechange
@@ -21,7 +21,7 @@ if __name__ == "__main__":
       (info[0], info[1], info[2], ljm.numberToIP(info[3]), info[4], info[5]))
 
     # Setup and call eReadName to read from AIN0 on the LabJack.
-    sig_psi = "AIN2"
+    sigLocation = "AIN2"
 
     # List variables
     start = float(time.time())
@@ -33,8 +33,8 @@ if __name__ == "__main__":
     #Average .004sec per data point
     #2500 = 10sec
     while len(t_stamp_act) < Record_Length:
-        sig = ljm.eReadName(handle, sig_psi)
-        if sig >= 0 and sig <=3:
+        sig = ljm.eReadName(handle, sigLocation)
+        if sig >= -100 and sig <=100:
             t_stamp_act.append(time.time())
             v_out.append(sig)
             #print(sig)
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     data_r = list(zip(t_stamp,v_out))
 
     # Write full dataframe to csv file
-    filename = xValue + '.csv'
+    filename = yValue + '.csv'
     file = open(filename, 'w', newline='')
     wrapper = csv.writer(file, dialect='excel')
     for line in data_r:
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     sensorOutputSTD = float(np.std(v_out[1:]))
 
     # Write Data Averages and Standard Deviations to new line in Averages Excel Doc
-    data_ave = [[xValue, sensorOutputAverage, sensorOutputSTD]]
+    data_ave = [[yValue, sensorOutputAverage, sensorOutputSTD]]
     wb = load_workbook(ave_filename)
     # Select First Worksheet
     ws = wb.worksheets[0]

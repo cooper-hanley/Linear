@@ -18,9 +18,9 @@ xval = []
 yval = []
 stdval = []
 for cell in ws['A']:
-    xval.append(cell.value)
-for cell in ws['B']:
     yval.append(cell.value)
+for cell in ws['B']:
+    xval.append(cell.value)
 for cell in ws['C']:
     stdval.append(cell.value)
 
@@ -53,11 +53,11 @@ fig, ax = plt.subplots(facecolor='gainsboro', figsize=(8, 5))
 # 2) Plot Area Color:
 ax.set_facecolor('snow')
 # 3) Title:
-ax.set_title('Sensor Output vs. xValues', **title_font)
+ax.set_title('Known yValues vs. Sensor Output', **title_font)
 # 4) X-axis Label:
-ax.set_xlabel('xValues', fontsize=16, color='black')
+ax.set_xlabel('Sensor Output', fontsize=16, color='black')
 # 5) Y-axis Label:
-ax.set_ylabel('Sensor Output', fontsize=16, color='black')
+ax.set_ylabel('Known yValues', fontsize=16, color='black')
 # 6) 1st Data Series with Error Bars:
 ax.errorbar(x,y, yerr = std, fmt = 'o', markersize = 2)
 #ax.plot(x,y,marker = 'x', markersize = 5, linestyle = 'None')
